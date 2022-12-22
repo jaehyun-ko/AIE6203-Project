@@ -13,7 +13,7 @@ def createDirectory(directory):
         
 
 
-# Class to convert images to grayscale and crop
+# 중앙을 자르고 resize
 class Transforms:
     def to_gray(frame1, frame2=None):
         gray_transform = transforms.Compose([
@@ -24,7 +24,7 @@ class Transforms:
             transforms.ToTensor()
         ])
 
-        # Subtract one frame from the other to get sense of ball and paddle direction
+        # diff frame으로 성능 개선
         if frame2 is not None:
             new_frame = gray_transform(frame2) - 0.4*gray_transform(frame1)
         else:
