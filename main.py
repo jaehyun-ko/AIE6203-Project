@@ -5,7 +5,8 @@ import argparse
 import gym.wrappers as wrappers
 from model import *
 from utils import *
-
+from torch.utils.tensorboard import SummaryWriter
+writer = SummaryWriter()
 parser = argparse.ArgumentParser()
 
 # Hyper Parameters
@@ -99,6 +100,10 @@ if __name__ == '__main__':
                 observation = new_observation
             # if agent.check_buffer():
             agent.train_step()
+            writer.add_scalar('Reward', score, episode)
+            writer.add_scalar('Epsilon', agent.epsilon, episode)
+            writer.add_scalar('Loss', agent.loss, episode)
+
 
             print(f'EPISODE {episode} REWARD [{score}] EPSILON [{agent.epsilon}]')
             history.append([episode, score])

@@ -10,8 +10,6 @@ def createDirectory(directory):
     except OSError:
         print("Error: Failed to create the directory.")
         
-        
-
 
 # 중앙을 자르고 resize
 class Transforms:
