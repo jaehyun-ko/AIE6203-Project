@@ -1,8 +1,7 @@
 # AIE6203-Project
----
+
 
 # Setting
----
 ## test enviroment
 you can test your enviroment by this code
 ```python
@@ -24,3 +23,8 @@ for _ in range(10000000):
 
 env.close()
 ```
+#usage
+## train
+python main.py --train 'train_model_path'
+other arguments are defined in python main.py 
+inspired in 
