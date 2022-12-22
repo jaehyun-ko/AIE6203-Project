@@ -213,12 +213,3 @@ class Agent(nn.Module):
         plt.ylabel('Scores')
         plt.draw()
         plt.pause(1e-8)
-        
-        # Save gif of an episode starting num_transitions ago from memory
-    def save_gif(self, num_transitions):
-        frames = []
-        for i in range(self.memory.pointer - num_transitions, self.memory.pointer):
-            frame = Image.fromarray(self.memory.memory[i].raw_state, mode='RGB')
-            frames.append(frame)
-        
-        frames[0].save('episode.gif', format='GIF', append_images=frames[1:], save_all=True, duration=10, loop=0)
