@@ -5,6 +5,7 @@ import argparse
 import gym.wrappers as wrappers
 from model import *
 from utils import *
+from torch.utils.tensorboard import SummaryWriter
 writer = SummaryWriter()
 parser = argparse.ArgumentParser()
 
