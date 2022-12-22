@@ -106,7 +106,7 @@ if __name__ == '__main__':
                 agent.plot(history)
             agent.update(episode)
             
-            if episode%1000 == 0:
+            if episode%10000 == 0:
                 agent.save_model(model_path ='ckpt/model_'+str(episode)+'.pth')
         
         # If it's the highest score, save model && clear memory
