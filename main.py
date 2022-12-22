@@ -119,22 +119,7 @@ if __name__ == '__main__':
     else:
         agent.load_model(args.test)
             
-    highest_score = 119
+    highest_score = 120
     history = []
     
     # Eval Model
-    for episode in range(1, args.episodes):
-    
-        reward = test(env, args.render)
-        print('EPISODE {0} REWARD [{1}]'.format(episode, reward))
-
-        history.append([episode, reward])
-        agent.plot(history)
-        
-        # Try to beat highest score
-        if reward > highest_score:
-            print('HIGHEST SCORE [{0}]'.format(reward))
-            break
-        
-    print('Closing environnement..')
-    env.close()
