@@ -83,14 +83,6 @@ class Network(nn.Module):
                 nn.ReLU(),
                 nn.Linear(512, num_actions)
                 )
-    
-        conv_out_dim = self.calc_conv_out_dim(self.input_dim)
-        
-    def calc_conv_out_dim(self, input_dim):
-        x = torch.zeros(1, *self.input_dim)
-        x = self.convlayer(x)
-        return int(np.prod(x.shape))
-    
         
     def forward(self, x):
         x = self.convlayer(x)
