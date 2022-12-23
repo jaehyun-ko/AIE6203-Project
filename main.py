@@ -107,8 +107,8 @@ if __name__ == '__main__':
 
             print(f'EPISODE {episode} REWARD [{score}] EPSILON [{agent.epsilon}]')
             history.append([episode, score])
-            if not args.render:
-                agent.plot(history)
+            # if not args.render:
+                # agent.plot(history)
             agent.update(episode)
             
             if episode%10000 == 0:

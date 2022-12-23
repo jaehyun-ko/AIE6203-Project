@@ -11,6 +11,7 @@ from main import args
 
 import numpy as np
 import random
+import sys
 
 # define some variables
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu:0')
@@ -82,6 +83,14 @@ class Network(nn.Module):
                 nn.ReLU(),
                 nn.Linear(512, num_actions)
                 )
+    
+        conv_out_dim = self.calc_conv_out_dim(self.input_dim)
+        
+    def calc_conv_out_dim(self, input_dim):
+        x = torch.zeros(1, *self.input_dim)
+        x = self.convlayer(x)
+        return int(np.prod(x.shape))
+    
         
     def forward(self, x):
         x = self.convlayer(x)
@@ -135,6 +144,8 @@ class Agent(nn.Module):
         self.q_network.load_state_dict(checkpoint["state_dict"])
         self.optimizer.load_state_dict(checkpoint["optimizer"])
     
+    
+    
     def check_buffer(self):
         if len(self.buffer) > self.buffer.replay_buffer_size:
             return True
@@ -148,20 +159,22 @@ class Agent(nn.Module):
 
             # 배치 하나 뽑아서
             state, action, reward, next_state, done = self.buffer.sampling()
+            # print(action, reward)
 
-            # DQN 이용 Q값 계산
+            # Calculate the value of the action taken
             q = self.q_network(state).gather(1, action)
 
             # target q 계산
             q_next = self.target_network(next_state).detach().max(1)[0].unsqueeze(1)
-   
-            # 벨만방정식, done이면 reward만
+            # Using q_next and reward, calculate q_target
+            # (1-done) ensures q_target is 0 if transition is in a terminating state
             q_target = (1-done) * (reward + self.gamma * q_next) + (done * reward)
 
-            # loss 계산
+            # Compute the loss
+            # loss = self.loss(q_target, q_eval).to(self.device)
             loss = self.criterion(q, q_target).to(self.device)
 
-            # 모델 업데이트
+            # Perform backward propagation and optimization step
             self.optimizer.zero_grad()
             loss.backward()
             self.optimizer.step()

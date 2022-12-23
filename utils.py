@@ -11,7 +11,7 @@ def createDirectory(directory):
         print("Error: Failed to create the directory.")
         
 
-# 중앙을 자르고 resize
+# Class to convert images to grayscale and crop
 class Transforms:
     def to_gray(frame1, frame2=None):
         gray_transform = transforms.Compose([
@@ -22,7 +22,7 @@ class Transforms:
             transforms.ToTensor()
         ])
 
-        # diff frame으로 성능 개선
+        # Subtract one frame from the other to get sense of ball and paddle direction
         if frame2 is not None:
             new_frame = gray_transform(frame2) - 0.4*gray_transform(frame1)
         else:
