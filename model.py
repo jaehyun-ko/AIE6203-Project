@@ -158,9 +158,7 @@ class Agent(nn.Module):
 
             # 배치 하나 뽑아서
             state, action, reward, next_state, done = self.buffer.sampling()
-            # print(action, reward)
-
-            # Calculate the value of the action taken
+            # policy q 계산
             q = self.q_network(state).gather(1, action)
 
             # target q 계산
@@ -170,7 +168,7 @@ class Agent(nn.Module):
             # Compute the loss
             loss = self.criterion(q, q_target).to(self.device)
 
-            # Perform backward propagation and optimization step
+            # backprop
             self.optimizer.zero_grad()
             loss.backward()
             self.optimizer.step()
