@@ -28,11 +28,26 @@ env.close()
 
 # usage
 
+```shell
+git clone https://github.com/jaehyun-ko/AIE6203-Project.git
+cd AIE6203-Project
+```
+
+
 ## DQN
 
-python main.py --train 'train_model_path' --render
+```shell
+python main.py --train 'model.pth' --render
+```
+
+model path:[model.pth](model.pth)
 
 ## A3C
 
+```shell
 python a3c.py --render true
+```
+
+model path : breakout-v4/model_#episode num.pth
+
 https://youtu.be/VarnVisEbhk
