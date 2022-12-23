@@ -11,7 +11,6 @@ from main import args
 
 import numpy as np
 import random
-import sys
 
 # define some variables
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu:0')
@@ -135,8 +134,6 @@ class Agent(nn.Module):
         checkpoint = torch.load(model_path)
         self.q_network.load_state_dict(checkpoint["state_dict"])
         self.optimizer.load_state_dict(checkpoint["optimizer"])
-    
-    
     
     def check_buffer(self):
         if len(self.buffer) > self.buffer.replay_buffer_size:
