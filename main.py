@@ -62,7 +62,6 @@ if __name__ == '__main__':
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu:0')
 
     replay_buffer = ReplayBuffer(args.replay_buffer_size, args.batch_size)
-    # if args.render:
     from pyvirtualdisplay import Display
     # display = Display(visible=1, size=(160, 210)
     display = Display(visible=1, size=(400, 400))
@@ -84,21 +83,16 @@ if __name__ == '__main__':
             frame = Transforms.to_gray(observation)
 
             while not done:
-                # Epsilon greedy
                 action = agent.take_action(frame)
-                # Action += 1, because we avoid 0 action (noop)
                 new_observation, reward, done, info = env.step(action)                
                 if args.render:
                     env.render()
-                
-                # Torch Tensor
                 next_frame = Transforms.to_gray(observation, new_observation)
                 agent.buffer.accumulate(frame, action, reward, next_frame, int(done), observation)
                 
                 score += reward
                 frame = next_frame
                 observation = new_observation
-            # if agent.check_buffer():
             agent.train_step()
             writer.add_scalar('Reward', score, episode)
             writer.add_scalar('Epsilon', agent.epsilon, episode)
@@ -114,7 +108,6 @@ if __name__ == '__main__':
             if episode%10000 == 0:
                 agent.save_model(model_path ='ckpt/model_'+str(episode)+'.pth')
         
-        # If it's the highest score, save model && clear memory
         if score > highest_score:
             highest_score = score
             print(f'Highest SCORE [{highest_score}]')
@@ -123,8 +116,3 @@ if __name__ == '__main__':
     
     else:
         agent.load_model(args.test)
-            
-    highest_score = 120
-    history = []
-    
-    # Eval Model

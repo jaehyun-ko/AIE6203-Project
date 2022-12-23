@@ -53,8 +53,7 @@ class ReplayBuffer(object):
     def sampling(self):
         batch = self.sample_batch()
         state_shape = batch.state[0].shape
-
-        # Convert to tensors with correct dimensions
+        # 언패킹
         state = torch.tensor(batch.state).view(self.batch_size, -1, state_shape[1], state_shape[2]).float().to(self.device)
         action = torch.tensor(batch.action).unsqueeze(1).to(self.device)
         reward = torch.tensor(batch.reward).float().unsqueeze(1).to(self.device)
@@ -166,12 +165,9 @@ class Agent(nn.Module):
 
             # target q 계산
             q_next = self.target_network(next_state).detach().max(1)[0].unsqueeze(1)
-            # Using q_next and reward, calculate q_target
-            # (1-done) ensures q_target is 0 if transition is in a terminating state
             q_target = (1-done) * (reward + self.gamma * q_next) + (done * reward)
 
             # Compute the loss
-            # loss = self.loss(q_target, q_eval).to(self.device)
             loss = self.criterion(q, q_target).to(self.device)
 
             # Perform backward propagation and optimization step

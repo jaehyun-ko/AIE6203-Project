@@ -11,7 +11,7 @@ def createDirectory(directory):
         print("Error: Failed to create the directory.")
         
 
-# Class to convert images to grayscale and crop
+# 논문에 제시된 전처리 구현
 class Transforms:
     def to_gray(frame1, frame2=None):
         gray_transform = transforms.Compose([
@@ -22,7 +22,7 @@ class Transforms:
             transforms.ToTensor()
         ])
 
-        # Subtract one frame from the other to get sense of ball and paddle direction
+        # 공과 bar를 추적하기 위한 frame extraction
         if frame2 is not None:
             new_frame = gray_transform(frame2) - 0.4*gray_transform(frame1)
         else:
