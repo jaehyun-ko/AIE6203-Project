@@ -35,3 +35,4 @@ python main.py --train 'train_model_path' --render
 ## A3C
 
 python a3c.py --render true
+https://youtu.be/VarnVisEbhk
